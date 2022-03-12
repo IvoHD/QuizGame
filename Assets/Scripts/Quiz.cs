@@ -6,24 +6,42 @@ using UnityEngine.UI;
 
 public class Quiz : MonoBehaviour
 {
+    [Header("Questions")]
     [SerializeField] TextMeshProUGUI questionText;
     [SerializeField] QuestionSo question;
+
+    [Header("Answers")]
     [SerializeField] GameObject[] answerButtons;
     int correctAnswerIndex;
+
+    [Header("Button Colors")]
     [SerializeField] Sprite defaultAnswerSprite;
     [SerializeField] Sprite correctAnswerSprite;
+
+    [Header("Timer")]
+    [SerializeField] Image timerImage;
+    TimerScript timerScript;
     void Start()
     {
+        timerScript = FindObjectOfType<TimerScript>();
         correctAnswerIndex = question.getAnswerIndex();
         GetNextQuestion();
     }
 
+    private void Update()
+    {
+        timerImage.fillAmount = timerScript.getFillFraction();
+        if (timerScript.loadNextQestion) {
+            GetNextQuestion();
+            timerScript.loadNextQestion = false;
+        }
+    }
     public void OnAnswerSelected(int index)
     {
-        if(index == correctAnswerIndex) {
+        if (index == correctAnswerIndex) {
             questionText.text = "Correct!";
             // Image buttonImage = answerButtons[index].GetComponent<Image>();
-            // buttonImage.sprite  = correctAnswerSprite;
+            // buttonImage.sprite  = correctAnswerSprite;cyc
             answerButtons[index].GetComponent<Image>().sprite = correctAnswerSprite;
         }
         else {
@@ -31,7 +49,7 @@ public class Quiz : MonoBehaviour
             answerButtons[correctAnswerIndex].GetComponent<Image>().sprite = correctAnswerSprite;
         }
         SetButtonState(false);
-
+        timerScript.CancelTimer();
     }
 
     void GetNextQuestion()
