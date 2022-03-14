@@ -21,9 +21,9 @@ public class Quiz : MonoBehaviour
     [Header("Timer")]
     [SerializeField] Image timerImage;
     TimerScript timerScript;
-    void Start()
+    private void Start()
     {
-        timerScript = FindObjectOfType<TimerScript>();
+        timerScript = GetComponent<TimerScript>();
         correctAnswerIndex = question.getAnswerIndex();
         GetNextQuestion();
     }

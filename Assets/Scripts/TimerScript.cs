@@ -9,7 +9,6 @@ public class TimerScript : MonoBehaviour
 
     public bool loadNextQestion;
     float fillFraction;
-
     bool isAnsweringQuestion;
     float timerValue;
     void Update()
