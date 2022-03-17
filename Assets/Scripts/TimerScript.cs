@@ -9,7 +9,7 @@ public class TimerScript : MonoBehaviour
 
     public bool loadNextQestion;
     float fillFraction;
-    bool isAnsweringQuestion;
+    public bool isAnsweringQuestion;
     float timerValue;
     void Update()
     {
@@ -49,5 +49,15 @@ public class TimerScript : MonoBehaviour
     public float getFillFraction()
     {
         return fillFraction;
+    }
+
+    public float getCurrentTime()
+    {
+        return timerValue;
+    }
+
+    public float getMaxTime()
+    {
+        return timeToComplete;
     }
 }
