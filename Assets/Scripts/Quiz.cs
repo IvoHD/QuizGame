@@ -10,7 +10,7 @@ public class Quiz : MonoBehaviour
     [SerializeField] TextMeshProUGUI questionText;
     [SerializeField] List<QuestionSo> questions = new List<QuestionSo>();
     QuestionSo currentQuestion;
-
+ 
     [Header("Answers")]
     [SerializeField] GameObject[] answerButtons;
     int correctAnswerIndex;
@@ -22,21 +22,32 @@ public class Quiz : MonoBehaviour
     [Header("Timer")]
     [SerializeField] Image timerImage;
     TimerScript timerScript;
-    bool hasAnsweredEarly;
+    bool hasAnsweredEarly = true;
 
     [Header("Score")]
     [SerializeField] TextMeshProUGUI scoreText;
     ScoreScript scoreScript;
-    private void Start()
+
+    [Header("ProgressBar")]
+    [SerializeField] Slider progressBar;
+
+    public bool isComplete;
+
+    private void Awake()
     {
         scoreScript = FindObjectOfType<ScoreScript>();
         timerScript = FindObjectOfType<TimerScript>();
+        progressBar.maxValue = questions.Count;
+        progressBar.value = 0;
     }
 
     private void Update()
     {
         timerImage.fillAmount = timerScript.getFillFraction();
         if (timerScript.loadNextQestion) {
+            if (progressBar.value == progressBar.maxValue)
+                isComplete = true;
+
             GetNextQuestion();
             hasAnsweredEarly = false;
             timerScript.loadNextQestion = false;
@@ -66,8 +77,8 @@ public class Quiz : MonoBehaviour
         }
         else {
             questionText.text = "Wrong!\nCorrect answer is " + currentQuestion.getPossibleAnswer(correctAnswerIndex);
+            answerButtons[index].GetComponent<Image>().sprite = correctAnswerSprite;
         }
-        answerButtons[index].GetComponent<Image>().sprite = correctAnswerSprite;
     }
 
     void GetNextQuestion()
@@ -78,6 +89,7 @@ public class Quiz : MonoBehaviour
             correctAnswerIndex = currentQuestion.getAnswerIndex();
             SetDefaultButtonSprites();
             DisplayQuestion();
+            progressBar.value++;
             scoreScript.IncrementQuestionsSeen();
         }
     }

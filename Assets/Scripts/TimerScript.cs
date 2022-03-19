@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TimerScript : MonoBehaviour
 {
-    float timeToComplete = 30f;
-    float timeToShowAnswer = 10f;
+    float timeToComplete = 15f;
+    float timeToShowAnswer = 5f;
 
     public bool loadNextQestion;
     float fillFraction;
